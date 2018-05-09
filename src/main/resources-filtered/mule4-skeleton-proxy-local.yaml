@@ -1,0 +1,15 @@
+#proxy configuration elements for local environment
+api:
+  id: "12378561"
+  
+proxy:
+  path: "/*"
+  port: "8084"
+  responseTimeout: "10000"
+
+implementation:
+  host: "localhost"
+  port: "9084"
+  path: "/configuration-property-service/v1/"
+  protocol: "HTTP"
+  

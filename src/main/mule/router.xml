@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:min-log="http://www.mulesoft.org/schema/mule/min-log"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:proxy="http://www.mulesoft.org/schema/mule/proxy"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+        http://www.mulesoft.org/schema/mule/proxy http://www.mulesoft.org/schema/mule/proxy/current/mule-proxy.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/min-log http://www.mulesoft.org/schema/mule/min-log/current/mule-min-log.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+
+	<configuration defaultResponseTimeout="${secure::proxy.responseTimeout}" />
+
+	<proxy:config name="proxy-config" />
+
+	<http:listener-config name="http-listener-config"
+		doc:name="HTTP Listener config">
+		<http:listener-connection host="0.0.0.0"
+			port="${secure::proxy.port}" />
+	</http:listener-config>
+
+	<api-gateway:autodiscovery apiId="${secure::api.id}"
+		flowRef="proxy" />
+
+	<http:request-config name="http-request-config"
+		basePath="${secure::implementation.path}">
+		<http:request-connection host="${secure::implementation.host}"
+			port="${secure::implementation.port}" />
+	</http:request-config>
+
+	<flow name="proxy">
+		<http:listener config-ref="http-listener-config" path="${secure::proxy.path}"
+			doc:name="Listener">
+			<http:response statusCode="#[attributes.statusCode]"
+				reasonPhrase="#[attributes.reasonPhrase]">
+				<http:headers><![CDATA[#[output applicaton/java
+---
+{
+	"x-transaction-id" : vars.transactionProperties.'x-transaction-id'
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
+		<min-log:new
+			doc:name="Set transaction properties" doc:id="03a758b5-7519-4a26-b745-754aebe0c195"
+			target="transactionProperties" headers="#[attributes.headers]" />
+		<ee:transform doc:name="Transform Message" doc:id="d239d181-0ba5-486b-814f-948de8d6cd59" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="transactionProperties" ><![CDATA[%dw 2.0
+import mergeWith from dw::core::Objects
+output application/java
+---
+vars.transactionProperties mergeWith {a: false, c: "Test"}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		
+		<min-log:timed transactionProperties="#[vars.transactionProperties]" doc:name="Timed" doc:id="63086e80-b2df-4df4-953a-cf83ddea857c" >
+			<proxy:request-headers config-ref="proxy-config"
+					target="proxyRequestHeaders" />
+				<http:request config-ref="http-request-config" method="#[attributes.method]"
+					path="#[attributes.requestPath replace ((((attributes.listenerPath replace '/\*' as Regex with '') replace /\{\w+\}/ with '\\w+') as Regex replace '/' with '\\/')) as Regex with '']"
+					doc:name="Request">
+					<http:response-validator>
+						<http:success-status-code-validator
+							values="0..599" />
+					</http:response-validator>
+				</http:request>
+				<proxy:response-headers config-ref="proxy-config"
+					target="proxyResponseHeaders" />
+		</min-log:timed>
+
+		<error-handler>
+			<on-error-continue type="HTTP:TIMEOUT"
+				logException="false">
+				<ee:transform doc:id="1e19d50a-9b4c-4ee6-a230-fb43e84c6df2">
+					<ee:message>
+						<ee:set-attributes><![CDATA[
+                            {
+                                statusCode: 504
+                            }
+                        ]]></ee:set-attributes>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

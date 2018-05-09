@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+
+	<secure-properties:config name="Deployment_Specific_Properties"
+		doc:name="Secure Properties Config"
+		file="mule4-skeleton-proxy-${mule.env}.yaml" key="${mule.key}"
+		doc:description="Deployment specific properties file which supports encryption of sensitive properties, like passwords, user ids, etc. This deployment environment sensitive...meaning that each deployment environment (DEV, TEST, PROD for instance) has it's own property file.
+
+These can be either .property files or .yaml files. The recommended approach is to use a YAML configuration files, because it allows the addition of type validations and autocompletion.
+
+Both encrypted and non-encrypted values can be used anywhere in the Mule app. Encrypted values should be defined between the sequence ![value].
+
+Note that you have to use the secure:: prefix to access all values inside a secure properties file, even if the values are non-encrypted.
+
+You can define more than one secure configuration properties file to read properties from. Simply define a &lt;secure-properties:config /&gt; tag for each file you want to load. Each secure configuration properties file is independent from the others." />
+
+</mule>

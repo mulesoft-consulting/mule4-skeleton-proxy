@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.mycompany</groupId>
+	<artifactId>mule4-skeleton-proxy</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>mule-application</packaging>
+	
+	<name>mule4-skeleton-proxy</name>
+
+	<properties>
+		<muleHttpConnector>1.1.0</muleHttpConnector>
+		<proxyExtensionVersion>1.1.0</proxyExtensionVersion>
+
+<!-- 		<attachMuleSources>true</attachMuleSources> -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<app.runtime>4.1.1</app.runtime>
+		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+		<mule.maven.plugin.version>3.1.2</mule.maven.plugin.version>
+
+		<project.name>mule4-skeleton-project</project.name>
+		<type>example</type>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.mulesoft.anypoint</groupId>
+			<artifactId>mule-http-proxy-extension</artifactId>
+			<version>${proxyExtensionVersion}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<version>${muleHttpConnector}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-scripting-module</artifactId>
+            <version>1.1.1</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+		<dependency>
+			<groupId>com.mulesoft.modules</groupId>
+			<artifactId>mule-secure-configuration-property-module</artifactId>
+			<classifier>mule-plugin</classifier>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.consulting.logging</groupId>
+			<artifactId>minimal-logging</artifactId>
+			<version>1.0.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+    </dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources-filtered/</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<armDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<server>anypoint-platform</server>
+						<target>${deploy.target}</target>
+						<targetType>${deploy.targetType}</targetType>
+						<environment>${deploy.environment}</environment>
+						<muleVersion>${app.runtime}</muleVersion>
+						<businessGroup>${deploy.businessGroup}</businessGroup>
+						<applicationName>${artifactId}-${instance.id}-${deploy.app.suffix}</applicationName>
+					</armDeployment>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>mule</id>
+			<name>Mule Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+		</repository>
+		<repository>
+			<id>releases-ee</id>
+			<name>Mule Release EE Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+		</repository>
+		<repository>
+			<id>mule-ee-snapshots</id>
+			<name>Mule Release EE Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/ci-snapshots/</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mulesoft-plugin-releases</id>
+			<name>MuleSoft Release Repository</name>
+			<url>http://repository.mulesoft.org/releases/</url>
+			<layout>default</layout>
+		</pluginRepository>
+		<pluginRepository>
+			<id>mulesoft-plugin-snapshots</id>
+			<name>MuleSoft Snapshots Repository</name>
+			<url>http://repository.mulesoft.org/snapshots/</url>
+			<layout>default</layout>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<distributionManagement>
+		<downloadUrl>http://www.mulesoft.com/mule-esb-enterprise-trial-download</downloadUrl>
+		<repository>
+			<id>mule-ee-releases</id>
+			<name>Mule Release Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>mule-ee-snapshots</id>
+			<name>Mule Snapshot Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
