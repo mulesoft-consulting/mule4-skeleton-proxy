@@ -13,7 +13,7 @@
 		<muleHttpConnector>1.1.0</muleHttpConnector>
 		<proxyExtensionVersion>1.1.0</proxyExtensionVersion>
 
-<!-- 		<attachMuleSources>true</attachMuleSources> -->
+	<!-- <attachMuleSources>true</attachMuleSources> -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -94,7 +94,10 @@
 						<goals>
 							<goal>deploy</goal>
 						</goals>
-					</execution>
+						<configuration>
+                            <classifier>mule-application</classifier>
+                        </configuration>
+                    </execution>
 				</executions>
 			</plugin>
 		</plugins>
