@@ -21,7 +21,7 @@
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<mule.maven.plugin.version>3.1.2</mule.maven.plugin.version>
 
-		<project.name>mule4-skeleton-project</project.name>
+		<project.name>mule4-skeleton-proxy</project.name>
 		<type>example</type>
 	</properties>
 
