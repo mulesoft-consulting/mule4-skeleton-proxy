@@ -5,7 +5,8 @@
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:proxy="http://www.mulesoft.org/schema/mule/proxy"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
         http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
         http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
         http://www.mulesoft.org/schema/mule/proxy http://www.mulesoft.org/schema/mule/proxy/current/mule-proxy.xsd
