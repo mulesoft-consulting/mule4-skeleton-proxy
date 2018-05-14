@@ -18,12 +18,6 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
 
 	<proxy:config name="proxy-config" />
 
-	<http:listener-config name="http-listener-config"
-		doc:name="HTTP Listener config">
-		<http:listener-connection host="0.0.0.0"
-			port="${secure::proxy.port}" />
-	</http:listener-config>
-
 	<api-gateway:autodiscovery apiId="${secure::api.id}"
 		flowRef="proxy" />
 

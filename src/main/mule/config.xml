@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 
+	<http:listener-config name="http-listener-config"
+		doc:name="HTTP Listener config"
+		doc:description="This is not used if a shared domain is configured in the listener..in that case remove this config to prevent this port from showing in the server's port scan.">
+		<http:listener-connection host="0.0.0.0"
+			port="${secure::proxy.port}" />
+	</http:listener-config>
+
 	<secure-properties:config name="Deployment_Specific_Properties"
-		doc:name="Secure Properties Config"
-		file="mule4-skeleton-proxy-${mule.env}.yaml" key="${mule.key}"
+		doc:name="Secure Properties Config" file="mule4-skeleton-proxy-${mule.env}.yaml"
+		key="${mule.key}"
 		doc:description="Deployment specific properties file which supports encryption of sensitive properties, like passwords, user ids, etc. This deployment environment sensitive...meaning that each deployment environment (DEV, TEST, PROD for instance) has it's own property file.
 
 These can be either .property files or .yaml files. The recommended approach is to use a YAML configuration files, because it allows the addition of type validations and autocompletion.

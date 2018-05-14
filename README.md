@@ -31,4 +31,12 @@ The configuration properties are stored in the src/main/resources-filtered/mule4
 * implementation.path is the base uri for the implementation,
 * implementation.protocol is one of HTTPS or HTTP.
 
+Note that the proxy.port is not used if a shared domain is configured and used for the HTTP listener configuration.
 
+## Runtime properties
+
+The properties mule.env and mule.key need to be set in the Mule runtime in order for the property configurations to be located. Additionally, if the Mule runtime is not configured to connect to API Manager, the API will be disabled (by default).
+
+For Studio, add the following VM command line values when running the API:
+
+ -Danypoint.platform.gatekeeper=disabled -Dmule.env=local -Dmule.key=Mulesoft12345678
