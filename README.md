@@ -43,7 +43,7 @@ For Studio, add the following VM command line values when running the API:
 
 ## Maven Settingss
 
-The Mule deployment assumes that certain deployment properties will come from profiles specified with the mvn command is executed. An example-settings.xml is provided as a reference
+The Mule deployment assumes that certain deployment properties will come from profiles specified when the mvn command is executed. An example-settings.xml is provided as a reference
 for creating your own settings.xml file. This is a standard feature of Maven and is described in its online documentation. Once the settings.xml file has been created, export a u and a p shell environment variables containing your Anypoint user name and password. Then use this maven command to deploy the API project:
 
 ```
